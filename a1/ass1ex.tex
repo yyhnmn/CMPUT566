@@ -1,0 +1,254 @@
+\documentclass[11pt]{article}
+
+\newcommand{\semester}{Fall 2019}
+\usepackage{fancyhdr,multicol}
+\usepackage{amsmath,amssymb}
+
+
+%% Custom page layout.
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-2in}
+\setlength{\topmargin}{-.5in}
+\setlength{\headsep}{.5in}
+\addtolength{\headsep}{-\headheight}
+\setlength{\footskip}{.5in}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\flushbottom
+
+\allowdisplaybreaks
+
+%% Custom headers and footers.
+\pagestyle{fancyplain}
+\let\headrule=\empty
+\let\footrule=\empty
+\lhead{\fancyplain{}{\semester}}
+\rhead{\fancyplain{}{CMPUT 466/566: Machine Learning}}
+\cfoot{{\thepage/\pageref{EndOfAssignment}}}
+
+%% Macros to generate question and part numbers automatically
+\newcounter{totalmarks}
+\setcounter{totalmarks}{0}
+\newcounter{questionnumber}
+\setcounter{questionnumber}{0}
+\newcounter{subquestionnumber}[questionnumber]
+\setcounter{subquestionnumber}{0}
+\renewcommand{\thesubquestionnumber}{(\alph{subquestionnumber})}
+\newcommand{\question}[2][]%
+  {\ifx\empty#2\empty\else
+   \addtocounter{totalmarks}{#2}\refstepcounter{questionnumber}\fi
+   \bigskip\noindent\textbf{\Large Question \thequestionnumber. } #1
+   {\scshape\ifx\empty#2\empty(continued)\else
+   [#2 mark\ifnum #2 > 1 s\fi]\fi}\par
+   \medskip\noindent\ignorespaces}
+\newcommand{\subquestion}[2][]%
+  {\ifx\empty#2\empty\else\refstepcounter{subquestionnumber}\fi
+   \medskip\noindent\textbf{\large \thesubquestionnumber } #1
+   {\scshape\ifx\empty#2\empty(continued)\else
+   [#2 mark\ifnum #2 > 1 s\fi]\fi}
+   \smallskip\noindent\ignorespaces}
+\newcommand{\bonus}[2][]%
+  {\bigskip\noindent\textbf{\Large Bonus. } #1
+   {\scshape\ifx\empty#2\empty(continued)\else
+   [#2 mark\ifnum #2 > 1 s\fi]\fi}\par
+   \medskip\noindent\ignorespaces}
+
+% Enable final count to be printed at top
+\usepackage{totcount}
+\regtotcounter{totalmarks}
+\begin{document}
+
+\thispagestyle{plain}
+
+\begin{center}
+\bfseries
+{\Large Homework Assignment \# 1}\\
+   Due: Thursday, September 26, 2019, 11:59 p.m. \\
+   Total marks: \total{totalmarks}
+\end{center}
+
+
+
+\question{10}
+
+Let $X$ be a random variable with outcome space $\Omega=\{a,b,c\}$ and  $p(a)=0.1, p(b)=0.2$, and $p(c)=0.7$. Let 
+%
+\begin{align*}
+f(x)=
+\left\{
+  \begin{array}{lr}
+    10 &  \text{if } x = a\\
+    5 &  \text{if } x = b\\
+    10/7 & \text{if } x = c
+  \end{array}
+\right.
+\end{align*}
+
+\subquestion{3} 
+What is $E[f(X)]$?
+
+\subquestion{3} 
+What is $E[1/p(X)]$?
+
+\subquestion{4} 
+For an arbitrary pmf $p$, what is $E[1/p(X)]$?
+
+% You can also define new variables to make it easier
+% and avoid long commands
+\newcommand{\muvec}{\boldsymbol{\mu}}
+
+\question{15}
+Let $\mathbf{X}_1, \ldots, \mathbf{X}_m$ be independent multivariate Gaussian random variables, with $\mathbf{X}_i \sim \mathcal{N}(\muvec_i, \boldsymbol{\Sigma}_i)$, with $\muvec_i \in \mathbb{R}^d$ and $\boldsymbol{\Sigma}_i \in \mathbb{R}^{d \times d}$ for dimension $d \in \mathbb{N}$. 
+Define $\mathbf{X} = a_1 \mathbf{X}_1 + a_2 \mathbf{X}_2 + \ldots + a_m \mathbf{X}_m$ as a convex combination, $a_i \ge 0$ and $\sum_{i=1}^m a_i = 1$. 
+
+\subquestion{5}
+Write the expected value $E[\mathbf{X}]$ in terms of the givens $a_i, \muvec_i, \boldsymbol{\Sigma}_i$. Show all you steps.
+What is the dimension of $E[\mathbf{X}]$?
+
+\subquestion{10}
+Write the covariance $\text{Cov}[\mathbf{X}]$ in terms of the givens $a_i, \muvec_i, \boldsymbol{\Sigma}_i$. Show all you steps.
+What is the dimension of $\text{Cov}[\mathbf{X}]$?
+Briefly explain how the result for
+$\text{Cov}[\mathbf{X}]$ would be different if the variables
+$\mathbf{X}_1$ and $\mathbf{X}_2$ are not independent and have covariance
+$\text{Cov}[\mathbf{X}_1,\mathbf{X}_2] = \boldsymbol{\Lambda}$ for $\boldsymbol{\Lambda} \in \mathbb{R}^{d \times d}$.
+
+
+
+
+\question{15}
+
+This question involves some simple simulations, to better visualize
+random variables and get some intuition for sampling,
+which is a central theme in machine learning. 
+Use the attached code called \verb+simulate.py+.
+This code is a simple script for sampling and plotting
+with python; play with some of the parameters to see what it is doing.
+Calling \verb+simulate.py+ runs with default parameters;
+\verb+simulate.py 1 100+ simulates 100 samples from a 1d Gaussian. 
+The generated plot is generically for 3 dimensions. If you call the function with 1d,
+then it simply plots the points on a line, but on a 3-dimensional plot. The maximum
+dimension that can be given to the script is 3.
+
+Note that if you do not have matplotlib installed, you will have to install it. 
+
+\subquestion{5}
+Run the code for 10, 100 and 1000 samples with dim=1 and $\sigma = 1.0$.
+Next run the code for 10, 100 and 1000 samples with dim=1 and $\sigma = 10.0$.
+What do you notice about the sample mean?
+
+\subquestion{5}
+The current covariance for dim=3 is 
+%
+\begin{align*}
+\Sigma = \left[ \begin{array}{ccc}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1\end{array} \right]
+.
+\end{align*}
+%
+%
+What does that mean about the multivariate Gaussian (i.e., the vector random variable composed of random variables $X$, $Y$ and $Z$)?
+
+\subquestion{5}
+Change the covariance to
+%
+\begin{align*}
+\Sigma = \left[ \begin{array}{ccc}
+1 & 0 & 1 \\
+0 & 1 & 0 \\
+1 & 0 & 1\end{array} \right]
+.
+\end{align*}
+%
+%
+What happens?
+
+
+\question{30}
+
+Suppose that the number of accidents occurring daily in a certain plant has a 
+Poisson distribution with an unknown mean $\lambda$. 
+Based on previous experience in similar industrial plants, 
+suppose that our initial feelings about the possible value of $\lambda$ 
+can be expressed by an exponential distribution with parameter $\theta=\tfrac{1}{2}$. 
+That is, the prior density is
+%
+\begin{align*}
+p(\lambda)=\theta \textrm{e}^{-\theta\lambda}
+\end{align*}
+%
+%
+where $\lambda\in [0,\infty)$. 
+
+\subquestion{5} 
+Before observing any data (any reported accidents),
+what is the most likely value for $\lambda$?
+
+\subquestion{5} 
+Now imagine there are 79 accidents over 9 days. 
+Determine the maximum likelihood estimate of $\lambda$.
+
+\subquestion{5} 
+Again imagine there are 79 accidents over 9 days. 
+Determine the maximum a posteriori (MAP) estimate of  $\lambda$.
+
+\subquestion{5}
+Imagine you now want to predict the number of accidents for tomorrow. 
+How can you use the maximum likelihood estimate computed above?
+What about the MAP estimate? What would they predict?
+
+\subquestion{5}
+For the MAP estimate, what is the purpose of the prior once we observe this data?
+
+\subquestion{5} 
+Imagine that now new safety measures have been put in place
+and you believe that the number of accidents per day should sharply
+decrease. How might you change $\theta$ to better reflect this new belief about the number of accidents?
+\emph{Hint:} Look at the plots of some exponential distributions to better understand
+the prior chosen on $\lambda$. 
+
+
+
+\question{30}
+
+Imagine that you would like to predict 
+if your favorite table will be free at your favorite restaurant. 
+The only additional piece of information you can collect, however, is if
+it is sunny or not sunny.
+%
+You collect paired samples from visit of the form (is sunny, is table free),
+where it is either sunny (1) or not sunny (0) 
+and the table is either free (1) or not free(0).
+
+\subquestion{10}
+How can this be formulated as a maximum likelihood problem?
+
+\subquestion{10}
+Assume you have collected data for the last 10 days and computed the maximum likelihood solution to
+the problem formulated in (a). 
+If it is sunny today, how would you predict if your table will be free?
+
+\subquestion{10}
+Imagine now that you could further gather information about if it is morning, afternoon, or evening.
+How does this change the maximum likelihood problem?
+
+
+\bonus{20}
+
+\subquestion{10}
+Using a computer, generate 1000 samples from a $d$-dimensional multivariate Gaussian with mean $\boldsymbol{0}$ and identity covariance matrix. Compute the average $\ell_2$ distance of each sample to the origin. Repeat this experiment for $d \in \{1, 2, 4, 8, 16, 32, 64, 128, 256\}$. 
+What happens to the average distance as $d$ increases? For $k$-means clustering, what is one implication of this outcome?
+
+\subquestion{10}
+Consider two $d$-dimensional hypercubes centered at the origin. The first has a side length of 1 and the second has a side length of 1 - $\epsilon$ ($ 0 < \epsilon < 1$). Give an expression for the ratio of the volume of the second hypercube to the volume of the first (in terms of $d$ and $\epsilon$). 
+What happens as $d$ gets large? How does this help explain the result about average distances from the previous question?
+
+
+
+\label{EndOfAssignment}%
+
+\end{document}
